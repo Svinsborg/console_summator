@@ -9,23 +9,40 @@ public class Main {
         String input = scn.nextLine();
         String inputEdit = input.replaceAll("\\s+","");
 
+        int a,b;
+
         String[] operators = {"+", "-", "/", "*"};
-        String[] operator = {"\\+", "-", "/", "\\*"};
-        int operatorsIndex=-1;
+        String[] separator = {"\\+", "-", "/", "\\*"};
+        int operatorsIndex =  -1 ;
         for (int i = 0; i < operators.length; i++) {
             if(inputEdit.contains(operators[i])){
                 operatorsIndex = i;
                 break;
             }
         }
-        if(operatorsIndex==-1){
+        if(operatorsIndex == -1){
             System.out.println("Некорректное выражение");
             return;
         }
 
-        String[] data = inputEdit.split(operator[operatorsIndex]);
-        int a,b;
-        a = Integer.parseInt(data[0]);
+        String[] data = inputEdit.split(separator[operatorsIndex]);
+
+        MyConverter converter = new MyConverter();
+
+        if(converter.checkRoman(data[0]) == MyConverter.checkRoman(data[1])){
+
+            boolean romanKey =  converter.checkRoman(data[0]);
+            if(romanKey = true){
+                a = converter.toInt(data[0]);
+                b = converter.toInt(data[1]);
+                System.out.println("Output: \n" + a + " " + b);
+            }
+        }
+
+
+
+
+/*        a = Integer.parseInt(data[0]);
         b = Integer.parseInt(data[1]);
 
         int result;
@@ -44,6 +61,6 @@ public class Main {
                 break;
         }
 
-        System.out.println("Output: \n" + result);
+        System.out.println("Output: \n" + result);*/
     }
 }
