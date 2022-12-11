@@ -3,7 +3,7 @@ package org.example;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Scanner scn = new Scanner(System.in);
         System.out.println("Input:");
         String input = scn.nextLine();
@@ -22,14 +22,12 @@ public class Main {
         }
 
         if (operatorsIndex == -1) {
-            ErrOutput("строка не является математической операцией");
-            return;
+            throw new Exception ("строка не является математической операцией");
         }
 
         String[] data = inputEdit.split(separator[operatorsIndex]);
         if(data.length > 2){
-            ErrOutput("т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-            System.exit(0);
+            throw new Exception ("т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
         }
 
         MyConverter converter = new MyConverter();
@@ -43,12 +41,12 @@ public class Main {
             if (romanKey) {
                 a = converter.toInt(data[0]);
                 b = converter.toInt(data[1]);
-                if(!RangeCheck(a,b)) System.exit(0);
-                System.out.println("Conxert to arabian: \n" + a + " " + b);
+                RangeCheck(a, b);
+                //System.out.println("Conxert to arabian: \n" + a + " " + b);
             } else {
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[1]);
-                if(!RangeCheck(a,b)) System.exit(0);
+                RangeCheck(a, b);
             }
 
             int result;
@@ -70,28 +68,18 @@ public class Main {
             System.out.println("Output: ");
 
             if (romanKey) {
-                if (result < 1)  ErrOutput("в римской системе нет отрицательных чисел");
+                if (result < 1)  throw new Exception ("в римской системе нет отрицательных чисел");
                 System.out.println(converter.ToRoman(result));
             } else {
                 System.out.println(result);
             }
         } else {
-            ErrOutput("используются одновременно разные системы счисления");
+            throw new Exception ("используются одновременно разные системы счисления");
         }
     }
-    public static void ErrOutput(String message) {
-        System.out.println("Err: " + message);
-    }
-
-    public static boolean RangeCheck(int a, int b) {
-        if (0 > a || a > 10){
-            ErrOutput("Числа должны быть в диапазоне от 0..10 или I..X");
-            return false;
+    public static void RangeCheck(int a, int b) throws Exception {
+        if ((a < 1 || a > 10) | (b < 1 || b > 10)){
+            throw new Exception ("Числа должны быть в диапазоне от 0..10 или I..X");
         }
-        else if (0 > b || b > 10){
-            ErrOutput("Числа должны быть в диапазоне от 0..10 или I..X");
-            return false;
-        }
-        return true;
     }
 }
